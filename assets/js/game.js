@@ -2,16 +2,25 @@ class Game {
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.player = new Player(this.ctx);
+    this.bg = new Background(this.ctx);
     this.intervalId = null;
     this.running = false;
+
+    this.audio = new Audio();
+    this.audio.src = "assets/sound/mw-theme.mp3";
   }
 
   start() {
     this.running = true;
+    this.audio.play();
 
     this.intervalId = setInterval(() => {
       this.clear();
+
+      this.bg.draw();
       this.player.draw();
+
+      this.bg.move();
       this.player.move();
     }, 1000 / 60);
   }
@@ -26,10 +35,10 @@ class Game {
   }
 
   onKeyDown(code) {
-    // TODO: pasar el evento al player
+    this.player.onKeyDown(code);
   }
 
   onKeyUp(code) {
-    // TODO: pasar el evento al player
+    this.player.onKeyUp(code);
   }
 }
